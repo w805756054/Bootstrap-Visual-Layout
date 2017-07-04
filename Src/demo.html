@@ -1,0 +1,173 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>visual layout</title>
+<link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+<link href="http://cdn.bootcss.com/jqueryui/1.12.1/jquery-ui.min.css" rel="stylesheet">
+<style>
+.editable.ui-droppable-hover { background: #f2f2f2; }
+.editable { min-height: 200px; background: #fafafa; padding: 30px 0; }
+.editable .container, .editable .container-fluid { border: 1px solid #5cb85c; min-height: 40px; margin-top: 25px; margin-bottom: 15px; padding-top: 10px; padding-bottom: 10px; position: relative; }
+.editable .row { margin: 20px -5px 10px -5px; border: 1px solid #5bc0de; min-height: 30px; padding: 0 10px 15px 10px; position: relative; }
+.editable .row.placeholder { display: block; border-color: #ddd }
+.editable .row [class*=col-] { border: 1px solid #f0ad4e; min-height: 30px; position: relative; margin-top: 25px; }
+.editable .row .btn-col { color: #fff; background: #f0ad4e; padding: 6px 12px; border-radius: 4px; }
+.editable .row .col.placeholder { border-color: #ddd }
+.editable .actions { position: absolute; left: 0; top: -20px }
+.editable .actions .glyphicon { margin-right: 8px; font-size: 11px; }
+.editable .container > .actions, .editable .container-fluid > .actions { color: #5cb85c }
+.editable .row > .actions { color: #5bc0de }
+.editable [class*=col-] > .actions { color: #f0ad4e }
+.editable .actions .glyphicon:hover { color: #DC292C; cursor: pointer; }
+.editable .container-fluid > .actions .custom-classes, .editable .container > .actions .custom-classes { margin-left: 20px; color: #95cb85c99 }
+.editable .row > .actions .custom-classes { margin-left: 30px; color: #5bc0de }
+.editable [class*=col-] > .actions .custom-classes { display: none; }
+.grid-menmbers { padding: 0; }
+.grid-menmbers .btn-container, .grid-menmbers .btn-row, .grid-menmbers .btn-col { cursor: move }
+.grid-menmbers .btn-group .dropdown-menu { box-shadow: none; background: #f0ad4e; }
+.grid-menmbers .btn-group .dropdown-menu li { float: left; border-right: 1px solid #D79C10 }
+.grid-menmbers .btn-group .dropdown-menu li:last-child { border: 0 }
+.grid-menmbers .btn-group .dropdown-menu li a { color: #fff; background: #f0ad4e }
+.grid-menmbers .btn-group .dropdown-menu li a:hover { background: #f0ad4e }
+.grid-menmbers>.btn-group { display: block; }
+.grid-menmbers>.btn-group:after { content: ""; display: table; clear: both; }
+.grid-menmbers>.btn-group .btn-group { position: static; }
+</style>
+</head>
+<body>
+<div class="container grid-menmbers">
+	<div class="btn-group"> <a class="btn btn-success btn-container">Container</a> <a class="btn btn-info btn-row">Row</a>
+		<div class="btn-group"> <a class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Column <span class="caret"></span></a>
+			<ul class="dropdown-menu">
+				<li><a class="btn-col" data-column="col-md-1 col-sm-6"> col 1 </a></li>
+				<li><a class="btn-col" data-column="col-md-2"> col 2 </a></li>
+				<li><a class="btn-col" data-column="col-md-3"> col 3 </a></li>
+				<li><a class="btn-col" data-column="col-md-4"> col 4 </a></li>
+				<li><a class="btn-col" data-column="col-md-5"> col 5 </a></li>
+				<li><a class="btn-col" data-column="col-md-6"> col 6 </a></li>
+				<li><a class="btn-col" data-column="col-md-7"> col 7 </a></li>
+				<li><a class="btn-col" data-column="col-md-8"> col 8 </a></li>
+				<li><a class="btn-col" data-column="col-md-9"> col 9 </a></li>
+				<li><a class="btn-col" data-column="col-md-10"> col 10 </a></li>
+				<li><a class="btn-col" data-column="col-md-11"> col 11 </a></li>
+				<li><a class="btn-col" data-column="col-md-12"> col 12 </a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<br/>
+<br/>
+<div class="editable"></div>
+
+<div class="modal fade custom-classes-modal" tabindex="-1" role="dialog" aria-labelledby="custom-classes-modal">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content">
+			<div class="input-group">
+				<input type="text" class="form-control txt-custom-classes" placeholder="custom classes...">
+				<span class="input-group-btn">
+				<button class="btn btn-success sava-custom-classes" type="button">保存</button>
+				</span> </div>
+		</div>
+	</div>
+</div>
+</body>
+<script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="http://cdn.bootcss.com/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script>
+	$(function(){	
+		
+		var editable = ".editable";
+		var editable_container=".editable .container, .editable .container-fluid";
+		var editable_row=".editable .container .row";
+		
+		$(editable).sortable({ 
+			items:"> .container"
+		});	
+			
+		
+		$(".btn-container").draggable({
+			helper: "clone"
+		});
+		$(".btn-row").draggable({
+			helper: "clone",
+			connectToSortable: editable_container
+		});
+		$(".btn-col").draggable({
+			helper: "clone",
+			connectToSortable: editable_row
+		});
+		
+		$(editable).droppable({
+			greedy: !0,
+			accept: ".btn-container",
+			drop: function() {
+				var container_action = '<div class="actions"><span class="action glyphicon glyphicon-resize-horizontal"></span><span class="action glyphicon glyphicon-trash"></span><span class="action glyphicon glyphicon-pencil" title="自定義Class"></span><span class="custom-classes">custom classes: </span></div>';
+				var container = $('<div class="container">'+container_action+'</div>');
+				container.sortable({ 
+					placeholder: "row placeholder",
+					connectWith: editable_container,
+					items: "> .row",
+					stop: function(e, ui) {	
+						var row = ui.item;	
+						var hasClass_btn_row = row.hasClass("btn-row");	
+						if(hasClass_btn_row) {	
+							var row_action = '<div class="actions"><span class="action glyphicon glyphicon-trash"></span><span class="action glyphicon glyphicon-pencil" title="自定義Class"></span><span class="custom-classes">custom classes: </span></div>';						
+							row = $('<div class="row">'+row_action+'</div>');
+							ui.item.replaceWith(row);							
+						}
+						row.sortable({ 
+							placeholder: "col placeholder",
+							connectWith: editable_row,
+							items:"> [class*=col-]",
+							start:function(e,ui){
+								ui.placeholder.addClass(ui.item.attr("data-column"));	
+							},
+							stop: function(e, ui) {
+								var col = ui.item;
+								var hasClass_btn_col = col.hasClass("btn-col");
+								if(hasClass_btn_col){
+									var col_action = '<div class="actions"><span class="action glyphicon glyphicon-trash"></span><span class="action glyphicon glyphicon-pencil" title="自定義Class"></span><span class="custom-classes">custom classes: </span></div>';
+									col = $('<div>'+col_action+'</div>')
+										.addClass(ui.item.attr("data-column"))
+										.attr("data-custom-classes",ui.item.attr("data-column"));
+									ui.item.replaceWith(col);									
+								}									
+							}
+						}); 
+						if(hasClass_btn_row) {
+							row.attr("data-not-custom-classes",row.attr("class"));	
+						}
+					}
+				});	
+				container.attr("data-not-custom-classes",container.attr("class"));		
+				$(editable).append(container)
+			}
+		});
+		$("body").bind("click",".actions .action",function(e){
+			var grid_element=$(e.target).parent().parent();
+			var action = $(e.target);
+			if(action.hasClass("glyphicon-trash")){
+				if(confirm("是否確認刪除本元素及其所包含的內容？")){
+					grid_element.remove();
+				}
+			}
+			else if(action.hasClass("glyphicon-resize-horizontal")){
+				grid_element.toggleClass("container").toggleClass("container-fluid");
+			}
+			else if(action.hasClass("glyphicon-pencil")){	
+				$('.custom-classes-modal .txt-custom-classes').val(grid_element.attr("data-custom-classes")||"");
+				$('.custom-classes-modal').modal('show');
+				$(".custom-classes-modal .sava-custom-classes").off("click");
+				$(".custom-classes-modal .sava-custom-classes").on("click",function(){
+					var classes=$.trim($('.custom-classes-modal .txt-custom-classes').val());
+					grid_element.attr("data-custom-classes",classes)
+					grid_element.find(".custom-classes").text("custom classes: "+ classes);
+					grid_element.attr("class",grid_element.attr("data-not-custom-classes")+" "+classes)
+				});
+			}			
+		});
+	});
+</script>
+</html>
