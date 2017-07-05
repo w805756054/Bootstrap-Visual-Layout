@@ -155,6 +155,12 @@
 			}
 			else if(action.hasClass("glyphicon-resize-horizontal")){
 				grid_element.toggleClass("container").toggleClass("container-fluid");
+				if(grid_element.hasClass("container")){
+					grid_element.attr("data-not-custom-classes",grid_element.attr("data-not-custom-classes").replace(/container-fluid/,"container"))
+				}
+				else if(grid_element.hasClass("container-fluid")){
+					grid_element.attr("data-not-custom-classes",grid_element.attr("data-not-custom-classes").replace(/container/,"container-fluid"))
+				}
 			}
 			else if(action.hasClass("glyphicon-pencil")){	
 				$('.custom-classes-modal .txt-custom-classes').val(grid_element.attr("data-custom-classes")||"");
@@ -163,7 +169,6 @@
 				$(".custom-classes-modal .sava-custom-classes").on("click",function(){
 					var classes=$.trim($('.custom-classes-modal .txt-custom-classes').val());
 					grid_element.attr("data-custom-classes",classes)
-					grid_element.find(".custom-classes").text("custom classes: "+ classes);
 					grid_element.attr("class",grid_element.attr("data-not-custom-classes")+" "+classes)
 				});
 			}			
