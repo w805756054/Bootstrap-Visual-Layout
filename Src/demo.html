@@ -169,6 +169,7 @@
 				$(".custom-classes-modal .sava-custom-classes").on("click",function(){
 					var classes=$.trim($('.custom-classes-modal .txt-custom-classes').val());
 					grid_element.attr("data-custom-classes",classes)
+					grid_element.find(">.actions>.custom-classes").text("custom classes: "+ classes);
 					grid_element.attr("class",grid_element.attr("data-not-custom-classes")+" "+classes)
 				});
 			}			
